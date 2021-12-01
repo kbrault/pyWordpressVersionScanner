@@ -13,7 +13,7 @@ def search_by_meta_generator():
     if not matches:
         pass
     else:
-        print(re.findall(regex, r.content.decode("utf-8"), re.MULTILINE)[0])
+       print(matches[0])
 
 # TODO :
 # def search_by_readme():
