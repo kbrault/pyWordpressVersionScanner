@@ -13,7 +13,7 @@ def search_by_meta_generator():
     if not matches:
         pass
     else:
-       print(matches[0])
+       return matches[0]
 
 # TODO :
 # def search_by_readme():
@@ -23,4 +23,4 @@ def search_by_meta_generator():
 
 
 if __name__ == "__main__":
-    search_by_meta_generator()
+    print(search_by_meta_generator())
