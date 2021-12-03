@@ -6,10 +6,8 @@ url = "https://blender.org"
 
 def url_exist(url_to_test):
     """Return validity of an URL
-
     Args:
         url_to_test (String): URL to be tested
-
     Returns:
         Boolean: True if the URL exists, False else
     """
@@ -19,10 +17,8 @@ def url_exist(url_to_test):
 
 def search_by_meta_generator(request):
     """If exists, return the meta generator Wordpress version. If not, return "Undefined"
-
     Args:
         request (requests.Response): HTTP response of the url
-
     Returns:
         String: If exists, Wordpress version, "Undefined" else
     """
@@ -34,10 +30,8 @@ def search_by_meta_generator(request):
 
 def search_by_included_version(request):
     """If exists, return the included CSS Wordpress version. If not, return "Undefined"
-
     Args:
         request (requests.Response): HTTP response of the url
-
     Returns:
         String: If exists, Wordpress version, "Undefined" else
     """
