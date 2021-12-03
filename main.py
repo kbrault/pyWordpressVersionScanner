@@ -3,38 +3,63 @@ import re
 
 url = "https://blender.org"
 
+
+def url_exist(url_to_test):
+    """Return validity of an URL
+
+    Args:
+        url_to_test (String): URL to be tested
+
+    Returns:
+        Boolean: True if the URL exists, False else
+    """
+    if requests.get(url_to_test).status_code == 200:
+        return True
+    return False
+
 def search_by_meta_generator(request):
+    """If exists, return the meta generator Wordpress version. If not, return "Undefined"
+
+    Args:
+        request (requests.Response): HTTP response of the url
+
+    Returns:
+        String: If exists, Wordpress version, "Undefined" else
     """
-    search_by_meta_generator : If exist, return the XXX wordpress version value of <meta name="generator" content="Wordpress XXX"/> 
-    :return: If exist, return the Wordpress version of the meta generator
-    """
-    # How about some beautifulsoup to avoid these naughty regex ?
-    regex = r"<meta.*?name=\"generator\".*?content=\"WordPress (.*?)\".*?>"
+    regex = r"<meta.*?name=\"generator\".*?content=\"WordPress (\*|\d+(?:\.\d+){0,2}(?:\.\*)?)"
     matches = re.findall(regex, request.content.decode("utf-8"), re.MULTILINE)
     if matches:
         return matches[0] 
-    else:
-        return "Undefined"
-
+    return "Undefined"
 
 def search_by_included_version(request):
+    """If exists, return the included CSS Wordpress version. If not, return "Undefined"
+
+    Args:
+        request (requests.Response): HTTP response of the url
+
+    Returns:
+        String: If exists, Wordpress version, "Undefined" else
     """
-    search_by_included_version : If exist, return the Wordpress version of the included CSS file of the /wp-admin/install.php URI
-    :return: If exist, return the Wordpress version of the included CSS file
-    """
-    response_install_file = requests.get(url+'/wp-admin/install.php')
-    if response_install_file.status_code == 200:
-        regex = r"wp-admin\/css\/install\.min\.css\?ver\=(.*?)'"
-        matches = re.findall(regex, response_install_file.content.decode("utf-8"), re.MULTILINE)
+    install_url = url+'/wp-admin/install.php'
+    if url_exist(install_url):
+        regex = r"wp-admin\/css\/install\.min\.css\?ver\=(\*|\d+(?:\.\d+){0,2}(?:\.\*)?)"
+        matches = re.findall(regex, requests.get(install_url).content.decode("utf-8"), re.MULTILINE)
         if matches:
             return matches[0]
-        else:
-            return "Undefined"
-    else:
-            return "Undefined"
-        
-# TODO :
-# def search_by_feed_meta_generator():
+        return "Undefined"
+    return "Undefined"
+
+def search_by_feed_meta_generator(request):
+    feed_url = url+'/feed/'
+    if url_exist(feed_url):
+        regex = r"<generator>https:\/\/wordpress.org\/\?v\=(\*|\d+(?:\.\d+){0,2}(?:\.\*)?)"
+        matches = re.findall(regex, requests.get(feed_url).content.decode("utf-8"), re.MULTILINE)
+        if matches:
+            return matches[0]
+        return "Undefined"
+    return "Undefined"
+
 # def search_by_readme_file():
 # def search_by_md5_files():
 
@@ -43,6 +68,7 @@ if __name__ == "__main__":
         r = requests.get(url,timeout=3)
         print(f'Meta Generator Version : '+search_by_meta_generator(r))
         print(f'Included CSS Version : '+search_by_included_version(r))
+        print(f'Feed Meta Generator Version : '+search_by_feed_meta_generator(r))
     except requests.exceptions.HTTPError as error_http:
         print ("HTTP Error :",error_http)
     except requests.exceptions.ConnectionError as error_connexion:
