@@ -16,9 +16,9 @@ def url_exist(url_to_test):
     return False
 
 def findall_regex(regex, url_to_test):
-    """If regex patern exist on the url_to_test.content, return the Group 1 match, "Undefined" else
+    """If regex pattern exist on the url_to_test.content, return the Group 1 match, "Undefined" else
     Args:
-        regex (Raw): Patern to match
+        regex (Raw): pattern to match
         url_to_test (String]): URL to test
     Returns:
         String: If exists, Wordpress version, "Undefined" else
@@ -67,10 +67,10 @@ if __name__ == "__main__":
         print(f'Included CSS Version : '+search_by_included_version())
         print(f'Feed Meta Generator Version : '+search_by_feed_meta_generator())
     except requests.exceptions.HTTPError as error_http:
-        print ("HTTP Error :",error_http)
+        print ("HTTP Error : ",error_http)
     except requests.exceptions.ConnectionError as error_connexion:
-        print ("Connexion Error :",error_connexion)
+        print ("Connexion Error : ",error_connexion)
     except requests.exceptions.Timeout as error_timeout:
-        print ("Timeout Error :",error_timeout)
+        print ("Timeout Error : ",error_timeout)
     except requests.exceptions.RequestException as error:
-        print ("OOps: Something Else",error)
+        print ("Undefined Error : ",error)
